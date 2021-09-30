@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using System.IO;
+using System.Linq;
 
 namespace SimpleExampleHighLevel
 {
@@ -10,6 +11,8 @@ namespace SimpleExampleHighLevel
     {
         static void Main(string[] args)
         {
+            TestLiveFiles();
+
             string temp = Path.GetTempPath();
             string path = Environment.ExpandEnvironmentVariables(Path.Combine(temp, "rocksdb_simple_hl_example"));
             // the Options class contains a set of configurable DB options
@@ -122,6 +125,85 @@ namespace SimpleExampleHighLevel
                 {
 
                 }
+            }
+        }
+        public static void TestLiveFiles()
+        {
+            var dbName = "TestLiveFiles";
+            DeleteDb(dbName);
+
+            string temp = Path.GetTempPath();
+            string path = Environment.ExpandEnvironmentVariables(Path.Combine(temp, "rocksdb_simple_hl_example"));
+            var options = new DbOptions().SetCreateIfMissing(true);
+            var flushOptions = new FlushOptions().SetWaitForFlush(true);
+
+            {
+                using (var db = RocksDb.Open(options, path))
+                {
+                    var files = db.GetLiveFilesMetadata();
+
+                    foreach(LiveFileMetadata metadata in files)
+                    {
+                        Console.WriteLine("level: " + metadata.FileMetadata.FileLevel + " fileName: " +  metadata.FileMetadata.FileName + " fileSize " + metadata.FileMetadata.FileSize);
+                        Console.WriteLine(metadata.FileDataMetadata.NumEntriesInFile);
+                    }
+                }
+            }
+
+            {
+                using (var db = RocksDb.Open(options, dbName))
+                {
+                    db.Put("key0", "value0");
+                    db.Put("key1", "value0");
+                    db.Flush(flushOptions);
+
+                    db.Put("key7", "value0");
+                    db.Put("key8", "value0");
+
+                    db.Flush(flushOptions);
+
+                    var files = db.GetLiveFilesMetadata();
+                    var fileNames = files.Select(file => file.FileMetadata.FileName);
+                    var fileList = Directory.EnumerateFiles(dbName);
+
+                    Debug.Assert(fileList.All(file => fileList.Contains(file)));
+                    Debug.Equals(db.Get("key0"), "value0");
+                }
+            }
+        }
+
+        //[Fact]
+        public void TestLiveFileNames()
+        {
+            var dbName = "TestLiveFiles";
+            DeleteDb(dbName);
+            var options = new DbOptions().SetCreateIfMissing(true);
+            var flushOptions = new FlushOptions().SetWaitForFlush(true);
+
+            using (var db = RocksDb.Open(options, dbName))
+            {
+                db.Put("key0", "value0");
+                db.Put("key1", "value0");
+                db.Flush(flushOptions);
+
+                db.Put("key7", "value0");
+                db.Put("key8", "value0");
+
+                db.Flush(flushOptions);
+
+                var files = db.GetLiveFileNames();
+                var fileList = Directory.EnumerateFiles(dbName);
+
+                Debug.Assert(fileList.All(file => fileList.Contains(file)));
+                Debug.Equals(db.Get("key0"), "value0");
+            }
+        }
+
+        public static void DeleteDb(string dbName)
+        {
+            if (Directory.Exists(dbName))
+            {
+                Directory.Delete(dbName, true);
             }
         }
     }
