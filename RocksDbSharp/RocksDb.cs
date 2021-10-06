@@ -57,6 +57,31 @@ namespace RocksDbSharp
             return new RocksDb(db, optionsReferences: null, cfOptionsRefs: null);
         }
 
+        /**
+         * add open column family with ttl method
+         * 
+         * */
+        public static RocksDb OpenWithTtl(OptionsHandle options, string path, IntPtr ttlSeconds, ColumnFamilies columnFamilies) 
+        {
+            string[] cfnames = columnFamilies.Names.ToArray();
+            IntPtr[] cfoptions = columnFamilies.OptionHandles.ToArray();
+            IntPtr[] cfhandles = new IntPtr[cfnames.Length];
+            for(int i = 0; i < 2; i++)
+            {
+                Console.WriteLine("cfnames: " + cfnames[i] + "\ncfoptions: " 
+                    + cfoptions[i].ToString() + "\ncfhandles: " 
+                    + cfhandles[i].ToString() + "\nttlSeconds: " + ttlSeconds.ToString());
+            }
+            IntPtr db = Native.Instance.rocksdb_open_column_families_with_ttl(options.Handle, path, cfnames.Length, cfnames, cfoptions, cfhandles, ttlSeconds);
+            var cfHandleMap = new Dictionary<string, ColumnFamilyHandleInternal>();
+            foreach (var pair in cfnames.Zip(cfhandles.Select(cfh => new ColumnFamilyHandleInternal(cfh)), (name, cfh) => new { Name = name, Handle = cfh }))
+                cfHandleMap.Add(pair.Name, pair.Handle);
+            return new RocksDb(db,
+                optionsReferences: options.References,
+                cfOptionsRefs: columnFamilies.Select(cfd => cfd.Options.References).ToArray(),
+                columnFamilies: cfHandleMap);
+        }
+
         public static RocksDb Open(DbOptions options, string path, ColumnFamilies columnFamilies)
         {
             string[] cfnames = columnFamilies.Names.ToArray();
@@ -252,6 +277,15 @@ namespace RocksDbSharp
             var cfh = Native.Instance.rocksdb_create_column_family(Handle, cfOptions.Handle, name);
             var cfhw = new ColumnFamilyHandleInternal(cfh);
             columnFamilies.Add(name, cfhw);
+            return cfhw;
+        }
+
+        public ColumnFamilyHandle CreateColumnFamilyWithTtl(ColumnFamilyOptions cfOptions, string name, int ttl)
+        {
+            var cfh = Native.Instance.rocksdb_create_column_family_with_ttl(Handle, cfOptions.Handle, name, ttl);
+            var cfhw = new ColumnFamilyHandleInternal(cfh);
+            columnFamilies.Add(name, cfhw);
+            Console.WriteLine("successfully created column family: " + cfh.ToString());
             return cfhw;
         }
 

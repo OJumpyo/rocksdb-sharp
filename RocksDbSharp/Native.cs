@@ -95,6 +95,7 @@ namespace RocksDbSharp
     using const_rocksdb_wal_readoptions_t_ptr = System.IntPtr;
     using rocksdb_memory_consumers_t_ptr = System.IntPtr;
     using rocksdb_memory_usage_t_ptr = System.IntPtr;
+    
     #endregion
     #region Delegates
     public delegate void PutDelegate(void_ptr p0, const_char_ptr k, size_t klen, const_char_ptr v, size_t vlen);
@@ -177,6 +178,249 @@ namespace RocksDbSharp
         {
             var result = rocksdb_open_with_ttl(options, name, ttl, out char_ptr_ptr errptr);
             if (errptr != IntPtr.Zero)
+                throw new RocksDbException(errptr);
+            return result;
+        }
+
+        /**
+         * add api to open rocksdb column_families with ttl
+         */
+        //什么都不变
+        public abstract rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+            const_rocksdb_options_t_ptr db_options,
+            const_char_ptr name,
+            int num_column_families,
+            const_char_ptr_ptr column_family_names,
+            const_rocksdb_options_t_ptr_ptr column_family_options,
+            rocksdb_column_family_handle_t_ptr_ptr column_family_handles,
+            const_char_ptr ttls,
+            out char_ptr_ptr errptr
+            );
+        public rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+            const_rocksdb_options_t_ptr db_options,
+            const_char_ptr name,
+            int num_column_families,
+            const_char_ptr_const_ptr column_family_names,
+            const_rocksdb_options_t_ptr_ptr column_family_options,
+            rocksdb_column_family_handle_t_ptr_ptr column_family_handles,
+            const_char_ptr ttls
+            )
+        {
+            var result = rocksdb_open_column_families_with_ttl(
+                                db_options, name, num_column_families,
+                                column_family_names, column_family_options,
+                                column_family_handles, ttls, out char_ptr_ptr errptr);
+            if (result != IntPtr.Zero)
+                throw new RocksDbException(errptr);
+            return result;
+        }
+
+        //只变了name
+        public abstract rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+            const_rocksdb_options_t_ptr db_options,
+            string name,
+            int num_column_families,
+            const_char_ptr_const_ptr column_family_names,
+            const_rocksdb_options_t_ptr_ptr column_family_options,
+            rocksdb_column_family_handle_t_ptr_ptr column_family_handles,
+            const_char_ptr ttls,
+            out char_ptr_ptr errptr
+            );
+        public rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+            const_rocksdb_options_t_ptr db_options,
+            string name,
+            int num_column_families,
+            const_char_ptr_const_ptr column_family_names,
+            const_rocksdb_options_t_ptr_ptr column_family_options,
+            rocksdb_column_family_handle_t_ptr_ptr column_family_handles,
+            const_char_ptr ttls
+            )
+        {
+            var result = rocksdb_open_column_families_with_ttl(
+                                db_options, name, num_column_families,
+                                column_family_names, column_family_options,
+                                column_family_handles, ttls, out char_ptr_ptr errptr);
+            if (result != IntPtr.Zero)
+                throw new RocksDbException(errptr);
+            return result;
+        }
+
+        //只变了ttls
+        public abstract rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+            const_rocksdb_options_t_ptr db_options,
+            const_char_ptr name,
+            int num_column_families,
+            const_char_ptr_const_ptr column_family_names,
+            const_rocksdb_options_t_ptr_ptr column_family_options,
+            rocksdb_column_family_handle_t_ptr_ptr column_family_handles,
+            int[] ttls,
+            out char_ptr_ptr errptr
+            );
+        public rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+            const_rocksdb_options_t_ptr db_options,
+            const_char_ptr name,
+            int num_column_families,
+            const_char_ptr_const_ptr column_family_names,
+            const_rocksdb_options_t_ptr_ptr column_family_options,
+            rocksdb_column_family_handle_t_ptr_ptr column_family_handles,
+            int[] ttls
+            )
+        {
+            var result = rocksdb_open_column_families_with_ttl(
+                                db_options, name, num_column_families,
+                                column_family_names, column_family_options,
+                                column_family_handles, ttls, out char_ptr_ptr errptr);
+            if (result != IntPtr.Zero)
+                throw new RocksDbException(errptr);
+            return result;
+        }
+
+        //只变了cfOptions指针类别
+        public abstract rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+           const_rocksdb_options_t_ptr db_options,
+           const_char_ptr name,
+           int num_column_families,
+           string[] column_family_names,
+           const_rocksdb_options_t_ptr[] column_family_options,
+           rocksdb_column_family_handle_t_ptr[] column_family_handles,
+           const_char_ptr ttls,
+           out char_ptr_ptr errptr
+           );
+        public rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+           const_rocksdb_options_t_ptr db_options,
+           const_char_ptr name,
+           int num_column_families,
+           string[] column_family_names,
+           const_rocksdb_options_t_ptr[] column_family_options,
+           rocksdb_column_family_handle_t_ptr[] column_family_handles,
+           const_char_ptr ttls
+           )
+        {
+            var result = rocksdb_open_column_families_with_ttl(
+                                db_options, name, num_column_families,
+                                column_family_names, column_family_options,
+                                column_family_handles, ttls, out char_ptr_ptr errptr);
+            if (result != IntPtr.Zero)
+                throw new RocksDbException(errptr);
+            return result;
+        }
+
+        //变name、ttls
+        public abstract rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+            const_rocksdb_options_t_ptr db_options,
+            string name,
+            int num_column_families,
+            const_char_ptr_const_ptr column_family_names,
+            const_rocksdb_options_t_ptr_ptr column_family_options,
+            rocksdb_column_family_handle_t_ptr_ptr column_family_handles,
+            int[] ttls,
+            out char_ptr_ptr errptr
+            );
+        public rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+            const_rocksdb_options_t_ptr db_options,
+            string name,
+            int num_column_families,
+            const_char_ptr_const_ptr column_family_names,
+            const_rocksdb_options_t_ptr_ptr column_family_options,
+            rocksdb_column_family_handle_t_ptr_ptr column_family_handles,
+            int[] ttls
+            )
+        {
+            var result = rocksdb_open_column_families_with_ttl(
+                                db_options, name, num_column_families,
+                                column_family_names, column_family_options,
+                                column_family_handles, ttls, out char_ptr_ptr errptr);
+            if (result != IntPtr.Zero)
+                throw new RocksDbException(errptr);
+            return result;
+        }
+
+        //变name、cfOptions
+        public abstract rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+           const_rocksdb_options_t_ptr db_options,
+           string name,
+           int num_column_families,
+           string[] column_family_names,
+           const_rocksdb_options_t_ptr[] column_family_options,
+           rocksdb_column_family_handle_t_ptr[] column_family_handles,
+           const_char_ptr ttls,
+           out char_ptr_ptr errptr
+           );
+        public rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+           const_rocksdb_options_t_ptr db_options,
+           string name,
+           int num_column_families,
+           string[] column_family_names,
+           const_rocksdb_options_t_ptr[] column_family_options,
+           rocksdb_column_family_handle_t_ptr[] column_family_handles,
+           const_char_ptr ttls
+           )
+        {
+            var result = rocksdb_open_column_families_with_ttl(
+                                db_options, name, num_column_families,
+                                column_family_names, column_family_options,
+                                column_family_handles, ttls, out char_ptr_ptr errptr);
+            if (result != IntPtr.Zero)
+                throw new RocksDbException(errptr);
+            return result;
+        }
+
+        //变ttls、cfOptions
+        public abstract rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+            const_rocksdb_options_t_ptr db_options,
+            const_char_ptr name,
+            int num_column_families,
+            string[] column_family_names,
+            const_rocksdb_options_t_ptr[] column_family_options,
+            rocksdb_column_family_handle_t_ptr[] column_family_handles,
+            int[] ttls,
+            out char_ptr_ptr errptr
+            );
+        public rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+            const_rocksdb_options_t_ptr db_options,
+            const_char_ptr name,
+            int num_column_families,
+            string[] column_family_names,
+            const_rocksdb_options_t_ptr[] column_family_options,
+            rocksdb_column_family_handle_t_ptr[] column_family_handles,
+            int[] ttls
+            )
+        {
+            var result = rocksdb_open_column_families_with_ttl(
+                                db_options, name, num_column_families,
+                                column_family_names, column_family_options,
+                                column_family_handles, ttls, out char_ptr_ptr errptr);
+            if (result != IntPtr.Zero)
+                throw new RocksDbException(errptr);
+            return result;
+        }
+
+        //变name、ttls、cfOptions
+        public abstract rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+            const_rocksdb_options_t_ptr db_options,
+            string name,
+            int num_column_families,
+            string[] column_family_names,
+            const_rocksdb_options_t_ptr[] column_family_options,
+            rocksdb_column_family_handle_t_ptr[] column_family_handles,
+            int[] ttls,
+            out char_ptr_ptr errptr
+            );
+        public rocksdb_t_ptr rocksdb_open_column_families_with_ttl(
+            const_rocksdb_options_t_ptr db_options,
+            string name,
+            int num_column_families,
+            string[] column_family_names,
+            const_rocksdb_options_t_ptr[] column_family_options,
+            rocksdb_column_family_handle_t_ptr[] column_family_handles,
+            int[] ttls
+            )
+        {
+            var result = rocksdb_open_column_families_with_ttl(
+                                db_options, name, num_column_families,
+                                column_family_names, column_family_options,
+                                column_family_handles, ttls, out char_ptr_ptr errptr);
+            if (result != IntPtr.Zero)
                 throw new RocksDbException(errptr);
             return result;
         }
@@ -687,6 +931,46 @@ namespace RocksDbSharp
             string column_family_name)
         {
             var result = rocksdb_create_column_family(db, column_family_options, column_family_name, out char_ptr_ptr errptr);
+            if (errptr != IntPtr.Zero)
+                throw new RocksDbException(errptr);
+            return result;
+        }
+
+        //add create cf with ttl method
+        //什么都不变
+        public abstract rocksdb_column_family_handle_t_ptr rocksdb_create_column_family_with_ttl(
+            rocksdb_t_ptr db,
+            const_rocksdb_options_t_ptr column_family_options,
+            const_char_ptr column_family_name,
+            int ttl,
+            out char_ptr_ptr errptr);
+        public rocksdb_column_family_handle_t_ptr rocksdb_create_column_family_with_ttl(
+            rocksdb_t_ptr db,
+            const_rocksdb_options_t_ptr column_family_options,
+            const_char_ptr column_family_name,
+            int ttl)
+        {
+            var result = rocksdb_create_column_family_with_ttl(db, column_family_options, column_family_name, ttl, out char_ptr_ptr errptr);
+            if (errptr != IntPtr.Zero)
+                throw new RocksDbException(errptr);
+            return result;
+        }
+
+        //变cf name
+        public abstract rocksdb_column_family_handle_t_ptr rocksdb_create_column_family_with_ttl(
+            rocksdb_t_ptr db,
+            const_rocksdb_options_t_ptr column_family_options,
+            string column_family_name,
+            int ttl,
+            out char_ptr_ptr errptr);
+
+        public rocksdb_column_family_handle_t_ptr rocksdb_create_column_family_with_ttl(
+            rocksdb_t_ptr db,
+            const_rocksdb_options_t_ptr column_family_options,
+            string column_family_name,
+            int ttl)
+        {
+            var result = rocksdb_create_column_family_with_ttl(db, column_family_options, column_family_name, ttl, out char_ptr_ptr errptr);
             if (errptr != IntPtr.Zero)
                 throw new RocksDbException(errptr);
             return result;
