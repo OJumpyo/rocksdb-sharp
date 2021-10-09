@@ -210,7 +210,7 @@ namespace RocksDbSharp
                                 db_options, name, num_column_families,
                                 column_family_names, column_family_options,
                                 column_family_handles, ttls, out char_ptr_ptr errptr);
-            if (result != IntPtr.Zero)
+            if (errptr != IntPtr.Zero)
                 throw new RocksDbException(errptr);
             return result;
         }
@@ -240,7 +240,7 @@ namespace RocksDbSharp
                                 db_options, name, num_column_families,
                                 column_family_names, column_family_options,
                                 column_family_handles, ttls, out char_ptr_ptr errptr);
-            if (result != IntPtr.Zero)
+            if (errptr != IntPtr.Zero)
                 throw new RocksDbException(errptr);
             return result;
         }
@@ -270,7 +270,7 @@ namespace RocksDbSharp
                                 db_options, name, num_column_families,
                                 column_family_names, column_family_options,
                                 column_family_handles, ttls, out char_ptr_ptr errptr);
-            if (result != IntPtr.Zero)
+            if (errptr != IntPtr.Zero)
                 throw new RocksDbException(errptr);
             return result;
         }
@@ -300,7 +300,7 @@ namespace RocksDbSharp
                                 db_options, name, num_column_families,
                                 column_family_names, column_family_options,
                                 column_family_handles, ttls, out char_ptr_ptr errptr);
-            if (result != IntPtr.Zero)
+            if (errptr != IntPtr.Zero)
                 throw new RocksDbException(errptr);
             return result;
         }
@@ -360,7 +360,7 @@ namespace RocksDbSharp
                                 db_options, name, num_column_families,
                                 column_family_names, column_family_options,
                                 column_family_handles, ttls, out char_ptr_ptr errptr);
-            if (result != IntPtr.Zero)
+            if (errptr != IntPtr.Zero)
                 throw new RocksDbException(errptr);
             return result;
         }
@@ -420,7 +420,7 @@ namespace RocksDbSharp
                                 db_options, name, num_column_families,
                                 column_family_names, column_family_options,
                                 column_family_handles, ttls, out char_ptr_ptr errptr);
-            if (result != IntPtr.Zero)
+            if (errptr != IntPtr.Zero)
                 throw new RocksDbException(errptr);
             return result;
         }

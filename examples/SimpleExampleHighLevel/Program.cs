@@ -46,7 +46,7 @@ namespace SimpleExampleHighLevel
                 .SetCompactionStyle(Compaction.Level)
                 ;
 
-            ColumnFamilies cfs = new ColumnFamilies(cfo1);
+            ColumnFamilies cfs = new ColumnFamilies();
 
             //Descriptor descriptor1 = new Descriptor("default", cfo1);
             Descriptor descriptor2 = new Descriptor("raw", cfo2);
@@ -54,23 +54,27 @@ namespace SimpleExampleHighLevel
             cfs.Add(descriptor2);
 
             int ttls1 = 5 * 60 * 60;
-            int ttls2 = 5 * 60 * 60;
+            int ttls2 = 4 * 60 * 60;
             int[] ttlSeconds = new int[2];
             ttlSeconds[0] = ttls1;
             ttlSeconds[1] = ttls2;
             IntPtr ttls = IntArrayToIntPtr(ttlSeconds);
-            
+
+            //IntPtr[] ttlSeconds = new IntPtr[2];
+            //ttlSeconds[0] = new IntPtr(5 * 60 * 60);
+            //ttlSeconds[1] = new IntPtr(4 * 60 * 60);
+
             {
-                using (var db = RocksDb.OpenWithTtl(options, path, ttls, cfs))
+                using (var db = RocksDb.OpenWithTtl(options, path, ttlSeconds, cfs))
                 {
                     //
                     //RocksDb db = RocksDb.Open(options, path, cfs)
 
-                    //putStringData(db, null);
-                    //putStringData(db, db.GetColumnFamily("raw"));
-
                     //db.CreateColumnFamilyWithTtl(cfo2, "raw", 500000);
                     //db.CreateColumnFamily(cfo2, "raw");
+
+                    //putStringData(db, null);
+                    putStringData(db, db.GetColumnFamily("raw"));
 
                     string val = db.Get("k-1");
                     if (val == null) Console.WriteLine("null");

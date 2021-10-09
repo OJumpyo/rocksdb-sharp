@@ -61,17 +61,11 @@ namespace RocksDbSharp
          * add open column family with ttl method
          * 
          * */
-        public static RocksDb OpenWithTtl(OptionsHandle options, string path, IntPtr ttlSeconds, ColumnFamilies columnFamilies) 
+        public static RocksDb OpenWithTtl(OptionsHandle options, string path, int[] ttlSeconds, ColumnFamilies columnFamilies) 
         {
             string[] cfnames = columnFamilies.Names.ToArray();
             IntPtr[] cfoptions = columnFamilies.OptionHandles.ToArray();
             IntPtr[] cfhandles = new IntPtr[cfnames.Length];
-            for(int i = 0; i < 2; i++)
-            {
-                Console.WriteLine("cfnames: " + cfnames[i] + "\ncfoptions: " 
-                    + cfoptions[i].ToString() + "\ncfhandles: " 
-                    + cfhandles[i].ToString() + "\nttlSeconds: " + ttlSeconds.ToString());
-            }
             IntPtr db = Native.Instance.rocksdb_open_column_families_with_ttl(options.Handle, path, cfnames.Length, cfnames, cfoptions, cfhandles, ttlSeconds);
             var cfHandleMap = new Dictionary<string, ColumnFamilyHandleInternal>();
             foreach (var pair in cfnames.Zip(cfhandles.Select(cfh => new ColumnFamilyHandleInternal(cfh)), (name, cfh) => new { Name = name, Handle = cfh }))
